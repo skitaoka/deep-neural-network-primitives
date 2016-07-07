@@ -20,13 +20,8 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="dot.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="dot.ispc">
+    <CustomBuild Include="dot.ispc">
       <Filter>ソース ファイル</Filter>
-    </None>
+    </CustomBuild>
   </ItemGroup>
 </Project>
