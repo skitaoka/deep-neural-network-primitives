@@ -169,14 +169,14 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </ExcludedFromBuild>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Platform)\$(Configuration)\%(Filename)_ispc.obj</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Platform)\$(Configuration)\%(Filename)_ispc.obj</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\%(Filename)_ispc.obj</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\%(Filename)_ispc.obj</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">ispc -O2 %(Filename).ispc -o $(Platform)\$(Configuration)\%(Filename)_ispc.obj -h %(Filename)_ispc.h --arch=x86 --target=avx</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ispc -O0 %(Filename).ispc -o $(Platform)\$(Configuration)\%(Filename)_ispc.obj -h %(Filename)_ispc.h --arch=x86 --target=avx -g</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ispc -O2 %(Filename).ispc -o $(Platform)\$(Configuration)\%(Filename)_ispc.obj -h %(Filename)_ispc.h --target=avx2</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ispc -O0 %(Filename).ispc -o $(Platform)\$(Configuration)\%(Filename)_ispc.obj -h %(Filename)_ispc.h --target=avx -g</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Platform)\$(Configuration)\%(Filename)_ispc.obj;$(Platform)\$(Configuration)\%(Filename)_ispc_sse4.obj;$(Platform)\$(Configuration)\%(Filename)_ispc_avx.obj;$(Platform)\$(Configuration)\%(Filename)_ispc_avx2.obj;%(Filename)_ispc.h;%(Filename)_ispc_sse4.h;%(Filename)_ispc_avx.h;%(Filename)_ispc_avx2.h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Platform)\$(Configuration)\%(Filename)_ispc.obj;$(Platform)\$(Configuration)\%(Filename)_ispc_sse4.obj;$(Platform)\$(Configuration)\%(Filename)_ispc_avx.obj;$(Platform)\$(Configuration)\%(Filename)_ispc_avx2.obj;%(Filename)_ispc.h;%(Filename)_ispc_sse4.h;%(Filename)_ispc_avx.h;%(Filename)_ispc_avx2.h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\%(Filename)_ispc.obj;$(Platform)\$(Configuration)\%(Filename)_ispc_sse4.obj;$(Platform)\$(Configuration)\%(Filename)_ispc_avx.obj;$(Platform)\$(Configuration)\%(Filename)_ispc_avx2.obj;%(Filename)_ispc.h;%(Filename)_ispc_sse4.h;%(Filename)_ispc_avx.h;%(Filename)_ispc_avx2.h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\%(Filename)_ispc.obj;$(Platform)\$(Configuration)\%(Filename)_ispc_sse4.obj;$(Platform)\$(Configuration)\%(Filename)_ispc_avx.obj;$(Platform)\$(Configuration)\%(Filename)_ispc_avx2.obj;%(Filename)_ispc.h;%(Filename)_ispc_sse4.h;%(Filename)_ispc_avx.h;%(Filename)_ispc_avx2.h</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">ispc -O2 %(Filename).ispc -o $(Platform)\$(Configuration)\%(Filename)_ispc.obj -h %(Filename)_ispc.h --arch=x86 --target=sse4,avx,avx2</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ispc -O0 %(Filename).ispc -o $(Platform)\$(Configuration)\%(Filename)_ispc.obj -h %(Filename)_ispc.h --arch=x86 --target=sse4,avx,avx2 -g</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ispc -O2 %(Filename).ispc -o $(Platform)\$(Configuration)\%(Filename)_ispc.obj -h %(Filename)_ispc.h --target=sse4,avx,avx2</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ispc -O0 %(Filename).ispc -o $(Platform)\$(Configuration)\%(Filename)_ispc.obj -h %(Filename)_ispc.h --target=sse4,avx,avx2 -g</Command>
     </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -76,5 +76,5 @@ int main() {
 #endif
   }
   time = omp_get_wtime() - time;
-  std::cout << time;
+  std::cout << time << ' ' << (double(B) * (S - R) * (S - R) * K * R * R * C) / (time * 1e+9) << " GFLOPS\n";
 }
