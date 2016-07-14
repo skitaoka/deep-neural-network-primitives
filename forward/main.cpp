@@ -3,7 +3,7 @@
 #include <iostream>
 #include <omp.h>
 
-#include "dot_ispc.h"
+#include "../primitives/lib_ispc.h"
 
 int main() {
   constexpr int B = 192; // batch size
@@ -28,8 +28,8 @@ int main() {
         for (int x = 0; x < S; ++x) {
           for (int k = 0; k < K / 2; ++k) {
             output[((b * S + y) * S + x) * K + k]
-              = ispc::dot(&filter[k * C],
-                          &input[((b * S + y) * S + x) * C], C);
+              = ispc::dotf(&filter[k * C],
+                           &input[((b * S + y) * S + x) * C], C);
           }
         }
       }
@@ -44,12 +44,12 @@ int main() {
         for (int x = 0; x <= S - R; ++x) {
           for (int k = 0; k < K; ++k) {
             output[((b * S + y + R / 2) * S + x + R / 2) * K + k]
-              = ispc::dot(filter.data() + (k * R + 0    ) * R * C,
-                          input.data() + ((b * S + 0 + y) * S + x) * C, C * R)
-              + ispc::dot(filter.data() + (k * R + 1    ) * R * C,
-                          input.data() + ((b * S + 1 + y) * S + x) * C, C * R)
-              + ispc::dot(filter.data() + (k * R + 2    ) * R * C,
-                          input.data() + ((b * S + 2 + y) * S + x) * C, C * R);
+              = ispc::dotf(filter.data() + (k * R + 0    ) * R * C,
+                           input.data() + ((b * S + 0 + y) * S + x) * C, C * R)
+              + ispc::dotf(filter.data() + (k * R + 1    ) * R * C,
+                           input.data() + ((b * S + 1 + y) * S + x) * C, C * R)
+              + ispc::dotf(filter.data() + (k * R + 2    ) * R * C,
+                           input.data() + ((b * S + 2 + y) * S + x) * C, C * R);
           }
         }
       }
@@ -65,8 +65,8 @@ int main() {
           for (int k = 0; k < K; ++k) {
             float retval = {};
             for (int yy = 0; yy < R; ++yy) {
-              retval += ispc::dot(filter.data() + (k * R + yy) * R * C,
-                                  input.data() + ((b * S + yy + y) * S + x) * C, C * R);
+              retval += ispc::dotf(filter.data() + (k * R + yy) * R * C,
+                                   input.data() + ((b * S + yy + y) * S + x) * C, C * R);
             }
             output[((b * S + y + R / 2) * S + x + R / 2) * K + k] = retval;
           }

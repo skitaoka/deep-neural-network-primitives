@@ -15,8 +15,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <CustomBuild Include="lib.ispc">
       <Filter>ソース ファイル</Filter>
-    </ClCompile>
+    </CustomBuild>
   </ItemGroup>
 </Project>
