@@ -18,21 +18,22 @@ int main() {
 
   double time = omp_get_wtime();
   {
+    // RxR conv
 #if 1
+
 #ifdef _OPENMP
 #pragma omp parallel for
 #endif
-    for (int b = 0; b < B; ++b) {
-      for (int y = 0; y <= S - R; ++y) {
-        for (int x = 0; x <= S - R; ++x) {
-          for (int c = 0; c < C; ++c) {
-            float retval = 0;
-            for (int yy = 0; yy < R; ++yy) {
-              retval += ispc::dotf(
-                filter.data() + (c * R + yy) * R * K,
-                output.data() + ((b * S + (yy + y)) * S + x) * K, R * K);
+    for (int k = 0; k < K; ++k) {
+      for (int c = 0; c < C; ++c) {
+        for (int yy = 0; yy < R; ++yy) {
+          for (int xx = 0; xx < R; ++xx) {
+            float retval = 0.0f;
+            for (int y = 0; y <= S - R; ++y) {
+              retval += ispc::dotf(input.data() + ((c * S + yy + y) * S + xx) * B,
+                                   output.data() + ((k * S + R / 2 + y) * S + R / 2) * B, B * (S - R + 1));
             }
-            input[((b * S + (y + R / 2)) * S + (x + R / 2)) * C + c] = retval;
+            filter[((k * R + yy) * R + xx) * C + c] = retval;
           }
         }
       }
@@ -44,17 +45,13 @@ int main() {
     for (int b = 0; b < B; ++b) {
       for (int y = 0; y <= S - R; ++y) {
         for (int x = 0; x <= S - R; ++x) {
-          for (int c = 0; c < C; ++c) {
-            float retval = 0;
+          for (int k = 0; k < K; ++k) {
+            float const a = output[((b * S + (y + R / 2)) * S + (x + R / 2)) * K + k];
             for (int yy = 0; yy < R; ++yy) {
-              for (int xx = 0; xx < R; ++xx) {
-                for (int k = 0; k < K; ++k) {
-                  retval += filter[((c * R + yy) * R + xx) * K + k]
-                    * output[((b * S + (yy + y)) * S + (xx + x)) * K + k];
-                }
-              }
+              ispc::axpyf(a,
+                          input.data() + ((b * S + (y + yy)) * S + x) * C,
+                          filter.data() + (k * R + yy) * R * C, R * C);
             }
-            input[((b * S + (y + R / 2)) * S + (x + R / 2)) * C + c] = retval;
           }
         }
       }
